@@ -87,7 +87,69 @@ class CustomRangeInput extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = "<style>" + STYLES + "</style>" + ELEMENTS;
 
+    this._loaded = this.shadowRoot.querySelector(".loaded");
+    this._passed = this.shadowRoot.querySelector(".passed");
     this._handle = this.shadowRoot.querySelector(".handle");
+  }
+
+  /****************************************************************************
+   *
+   * Here are attributes and properties managements below
+   *
+   ****************************************************************************/
+  static get observedAttributes() {
+    return ["value", "subvalue", "min", "max", "step"];
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) {
+      return;
+    }
+    switch (name) {
+      case "value":
+        this.value = newValue;break;
+      case "subvalue":
+        this.subvalue = newValue;break;
+      case "min":
+        this.min = newValue;break;
+      case "max":
+        this.max = newValue;break;
+      case "step":
+        this.step = newValue;break;
+    }
+  }
+  get value() {
+    return this.getAttribute("value") || 0;
+  }
+  set value(v) {
+    this.setAttribute("value", v);
+    // TODO Update css properties
+    this._passed.style.width = this._handle.style.left = 100 * (this.value - this.min) / (this.max - this.min) + "%";
+  }
+  get subvalue() {
+    return this.getAttribute("subvalue") || 0;
+  }
+  set subvalue(v) {
+    this.setAttribute("subvalue", v);
+    // TODO Update css properties
+    this._loaded.style.width = 100 * (this.subvalue - this.min) / (this.max - this.min) + "%";
+  }
+  get min() {
+    return this.getAttribute("min") || 0;
+  }
+  set min(v) {
+    this.setAttribute("min", v);
+  }
+  get max() {
+    return this.getAttribute("max") || 100;
+  }
+  set max(v) {
+    this.setAttribute("max", v);
+  }
+  get step() {
+    return this.getAttribute("step") || 0.1;
+  }
+  set step(v) {
+    this.setAttribute("step", v);
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = CustomRangeInput;
@@ -102,7 +164,7 @@ exports = module.exports = __webpack_require__(2)();
 
 
 // module
-exports.push([module.i, ":host {\n  display: flex;\n  align-items: center;\n  font-size: 20px;\n  max-width: 100%;\n  height: 2em;\n  overflow: hidden; }\n\n.bar, .bar:before {\n  font-size: 0.5em;\n  width: calc(100% - 0.8em);\n  height: 0.6em;\n  margin: 0 calc(1em + 1em);\n  border-radius: 0.6em;\n  border: none;\n  background-color: rgba(255, 255, 255, 0.2);\n  cursor: pointer; }\n  .bar:before {\n    position: absolute;\n    margin: 0;\n    content: '';\n    background-color: rgba(255, 255, 255, 0.7); }\n  .bar .handle, .bar:before .handle {\n    background-color: rgba(255, 255, 255, 0.7);\n    width: 2em;\n    height: 2em;\n    border: 1px solid gray;\n    border-radius: 2em;\n    cursor: inherit;\n    position: relative;\n    transform: translate(-50%, -50%);\n    top: 50%;\n    left: 100%; }\n    .bar .handle:hover, .bar:before .handle:hover {\n      background-color: rgba(255, 255, 255, 0.9); }\n", ""]);
+exports.push([module.i, ":host {\n  display: flex;\n  align-items: center;\n  font-size: 20px;\n  max-width: 100%;\n  height: 2em;\n  overflow: hidden; }\n\n.bar, .bar .loaded, .bar .passed {\n  font-size: 0.5em;\n  width: calc(100% - 0.8em);\n  height: 0.6em;\n  margin: 0 calc(1em + 1em);\n  border-radius: 0.6em;\n  border: none;\n  background-color: rgba(255, 255, 255, 0.2);\n  cursor: pointer;\n  position: relative; }\n  .bar .loaded, .bar .passed {\n    position: absolute;\n    background-color: rgba(255, 255, 255, 0.2);\n    margin: 0;\n    width: 0; }\n  .bar .passed {\n    background-color: rgba(255, 255, 255, 0.4);\n    width: 60%; }\n  .bar .handle {\n    display: block;\n    background-color: rgba(255, 255, 255, 0.8);\n    width: 2em;\n    height: 2em;\n    border: 1px solid gray;\n    border-radius: 2em;\n    cursor: inherit;\n    position: relative;\n    transform: translate(-50%, -50%);\n    top: 50%;\n    left: 0; }\n    .bar .handle:hover {\n      background-color: rgba(255, 255, 255, 0.9); }\n", ""]);
 
 // exports
 
@@ -167,7 +229,7 @@ module.exports = function() {
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"bar\">\n  <div class=\"handle\"></div>\n</div>\n";
+module.exports = "<div class=\"bar\">\n  <div class=\"loaded\"></div>\n  <div class=\"passed\"></div>\n  <div class=\"handle\"></div>\n</div>\n";
 
 /***/ }),
 /* 4 */

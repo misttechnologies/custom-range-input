@@ -3,15 +3,15 @@ $baseSize:            10px;
 $barThickness:        0.6em;
 $barBorder:           none;
 $barColorBase:        rgba(white, 0.2);
-$barColorLoaded:      rgba(white, 0.45);
-$barColorPassed:      rgba(white, 0.7);
+$barColorLoaded:      rgba(white, 0.2);
+$barColorPassed:      rgba(white, 0.4);
 $barMargin:           1em;
 
 $handleWidth:         2em;
 $handleHeight:        2em;
 $handleRadius:        min($handleWidth, $handleHeight);
 $handleBorder:        1px solid gray;
-$handleColor:         rgba(white, 0.7);
+$handleColor:         rgba(white, 0.8);
 $handleColorHovered:  rgba(white, 0.9);
 
 :host {
@@ -32,16 +32,24 @@ $handleColorHovered:  rgba(white, 0.9);
   border:           $barBorder;
   background-color: $barColorBase;
   cursor:           pointer;
+  position:         relative;
 
-  &:before {
+  .loaded {
     @extend .bar;
-    position: absolute;
-    margin: 0;
-    content: '';
+    position:         absolute;
+    background-color: $barColorLoaded;
+    margin:           0;
+    width:            0; // This can be changed by script
+  }
+
+  .passed {
+    @extend .loaded;
     background-color: $barColorPassed;
+    width:            60%; // This can be changed by script
   }
 
   .handle {
+    display: block;
     background-color: $handleColor;
     width:            $handleWidth;
     height:           $handleHeight;
@@ -55,11 +63,10 @@ $handleColorHovered:  rgba(white, 0.9);
     top:              50%;
 
     // left percentage value means input's value
-    left:             100%;
+    left:             0; // This can be changed by script
 
     &:hover {
       background-color: $handleColorHovered;
     }
-
   }
 }
