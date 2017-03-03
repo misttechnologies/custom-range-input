@@ -1,0 +1,15 @@
+{
+  "name": "custom-range-input",
+  "version": "0.1.0",
+  "main": "dist/customrangeinput.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "css-loader": "^0.26.2",
+    "scss-loader": "0.0.1",
+    "webpack": "^2.2.1"
+  }
+}
