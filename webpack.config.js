@@ -17,6 +17,11 @@ module.exports = {
         query: {
           cacheDirectory: true
         }
+      },
+      {
+        test: /\.html$/,
+        exclude: /example/,
+        loader: 'html-loader'
       }
     ]
   }

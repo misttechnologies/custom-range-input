@@ -1,0 +1,39 @@
+$fontSize: 20px;
+
+$barThickness: 0.2em;
+$barColorBase: rgba(255, 255, 255, 0.45);
+$barColorLoaded: rgba(255, 255, 255, 0.7);
+$barColorPassed: rgba(255, 255, 255, 0.9);
+
+$handleRadius: 0.8em;
+$handleColor: rgba(255, 255, 255, 0.7);
+$handleColorHovered: rgba(255, 255, 255, 0.9);
+
+:host {
+  display: inline;
+}
+
+.bar {
+  font-size: $fontSize;
+  width: calc(100% - 0.8em);
+  height: $barThickness;
+  margin: 0 0.4em;
+  border-radius: $barThickness;
+  border: 1px solid gray;
+  background-color: rgba(255, 255, 255, 0.7);
+
+  .handle {
+    background-color: $handleColor;
+    width: $handleRadius;
+    height: $handleRadius;
+    border: 1px solid gray;
+    border-radius: $handleRadius;
+    position: relative;
+    top: 0;
+    transform: translateY(-50%);
+
+    &:hover {
+      background-color: $handleColorHovered;
+    }
+  }
+}

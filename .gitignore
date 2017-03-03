@@ -1,4 +1,7 @@
 node_modules/
+npm-debug.log
+._*
+.DS_Store
 
 # vim backup
 .*.swp

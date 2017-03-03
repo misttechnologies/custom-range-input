@@ -1,15 +1,26 @@
 {
   "name": "custom-range-input",
   "version": "0.1.0",
+  "license": "BSD-3-Clause",
   "main": "dist/customrangeinput.js",
+  "description": "",
+  "keywords": "",
+  "author": "Shintaro Tanaka <qpshinqp@mist-t.co.jp> (https://github.com/qpSHiNqp)",
   "scripts": {
-    "build": "webpack"
+    "postinstall": "npm run build",
+    "clean": "rm -r ./dist || exit 0",
+    "build": "npm run clean && webpack",
+    "watch": "npm run clean && webpack --watch",
+    "serve": "serve ./"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
     "css-loader": "^0.26.2",
-    "scss-loader": "0.0.1",
+    "html-loader": "^0.4.5",
+    "node-sass": "^4.5.0",
+    "sass-loader": "^6.0.2",
+    "serve": "^4.0.1",
     "webpack": "^2.2.1"
   }
 }
