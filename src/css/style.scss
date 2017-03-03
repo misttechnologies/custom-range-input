@@ -1,39 +1,65 @@
-$fontSize: 20px;
+$baseSize:            10px;
 
-$barThickness: 0.2em;
-$barColorBase: rgba(255, 255, 255, 0.45);
-$barColorLoaded: rgba(255, 255, 255, 0.7);
-$barColorPassed: rgba(255, 255, 255, 0.9);
+$barThickness:        0.6em;
+$barBorder:           none;
+$barColorBase:        rgba(white, 0.2);
+$barColorLoaded:      rgba(white, 0.45);
+$barColorPassed:      rgba(white, 0.7);
+$barMargin:           1em;
 
-$handleRadius: 0.8em;
-$handleColor: rgba(255, 255, 255, 0.7);
-$handleColorHovered: rgba(255, 255, 255, 0.9);
+$handleWidth:         2em;
+$handleHeight:        2em;
+$handleRadius:        min($handleWidth, $handleHeight);
+$handleBorder:        1px solid gray;
+$handleColor:         rgba(white, 0.7);
+$handleColorHovered:  rgba(white, 0.9);
 
 :host {
-  display: inline;
+  display:      flex;
+  align-items:  center;
+  font-size:    #{$baseSize * 2};
+  max-width:    100%;
+  height:       $handleHeight;
+  overflow:     hidden;
 }
 
 .bar {
-  font-size: $fontSize;
-  width: calc(100% - 0.8em);
-  height: $barThickness;
-  margin: 0 0.4em;
-  border-radius: $barThickness;
-  border: 1px solid gray;
-  background-color: rgba(255, 255, 255, 0.7);
+  font-size:        0.5em;
+  width:            calc(100% - 0.8em);
+  height:           $barThickness;
+  margin:           0 calc(#{$barMargin} + #{$handleWidth / 2});
+  border-radius:    $barThickness;
+  border:           $barBorder;
+  background-color: $barColorBase;
+  cursor:           pointer;
+
+  &:before {
+    @extend .bar;
+    position: absolute;
+    margin: 0;
+    content: '';
+    background-color: $barColorPassed;
+  }
 
   .handle {
     background-color: $handleColor;
-    width: $handleRadius;
-    height: $handleRadius;
-    border: 1px solid gray;
-    border-radius: $handleRadius;
-    position: relative;
-    top: 0;
-    transform: translateY(-50%);
+    width:            $handleWidth;
+    height:           $handleHeight;
+    border:           $handleBorder;
+    border-radius:    $handleRadius;
+    cursor:           inherit;
+
+    // Vertically centered
+    position:         relative;
+    transform:        translate(-50%, -50%);
+    top:              50%;
+
+    // left percentage value means input's value
+    left:             100%;
 
     &:hover {
       background-color: $handleColorHovered;
     }
+
   }
 }

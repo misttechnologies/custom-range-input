@@ -102,7 +102,7 @@ exports = module.exports = __webpack_require__(2)();
 
 
 // module
-exports.push([module.i, ":host {\n  display: inline; }\n\n.bar {\n  font-size: 20px;\n  width: calc(100% - 0.8em);\n  height: 0.2em;\n  margin: 0 0.4em;\n  border-radius: 0.2em;\n  border: 1px solid gray;\n  background-color: rgba(255, 255, 255, 0.7); }\n  .bar .handle {\n    background-color: rgba(255, 255, 255, 0.7);\n    width: 0.8em;\n    height: 0.8em;\n    border: 1px solid gray;\n    border-radius: 0.8em;\n    position: relative;\n    top: 0;\n    transform: translateY(-50%); }\n    .bar .handle:hover {\n      background-color: rgba(255, 255, 255, 0.9); }\n", ""]);
+exports.push([module.i, ":host {\n  display: flex;\n  align-items: center;\n  font-size: 20px;\n  max-width: 100%;\n  height: 2em;\n  overflow: hidden; }\n\n.bar, .bar:before {\n  font-size: 0.5em;\n  width: calc(100% - 0.8em);\n  height: 0.6em;\n  margin: 0 calc(1em + 1em);\n  border-radius: 0.6em;\n  border: none;\n  background-color: rgba(255, 255, 255, 0.2);\n  cursor: pointer; }\n  .bar:before {\n    position: absolute;\n    margin: 0;\n    content: '';\n    background-color: rgba(255, 255, 255, 0.7); }\n  .bar .handle, .bar:before .handle {\n    background-color: rgba(255, 255, 255, 0.7);\n    width: 2em;\n    height: 2em;\n    border: 1px solid gray;\n    border-radius: 2em;\n    cursor: inherit;\n    position: relative;\n    transform: translate(-50%, -50%);\n    top: 50%;\n    left: 100%; }\n    .bar .handle:hover, .bar:before .handle:hover {\n      background-color: rgba(255, 255, 255, 0.9); }\n", ""]);
 
 // exports
 
