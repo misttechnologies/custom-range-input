@@ -1,0 +1,3 @@
+[submodule "vendor/webcomponentsjs"]
+	path = vendor/webcomponentsjs
+	url = git@github.com:misttechnologies/webcomponentsjs

@@ -11,8 +11,8 @@ $handleWidth:         2em;
 $handleHeight:        2em;
 $handleRadius:        min($handleWidth, $handleHeight);
 $handleBorder:        1px solid gray;
-$handleColor:         rgba(white, 0.8);
-$handleColorHovered:  rgba(white, 0.9);
+$handleColor:         rgba(white, 0.85);
+$handleColorHovered:  rgba(white, 1.0);
 
 :host {
   display:      flex;
@@ -40,6 +40,7 @@ $handleColorHovered:  rgba(white, 0.9);
     background-color: $barColorLoaded;
     margin:           0;
     width:            0; // This can be changed by script
+    height:           100%;
   }
 
   .passed {
