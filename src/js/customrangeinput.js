@@ -14,7 +14,7 @@ export default function defineCustomRangeInput() {
           this.attachShadow({mode: "open"});
           this.shadowRoot.innerHTML =
             `
-            <style>${require("./../css/style.scss")}</style>
+            <style>${require("!css-loader!sass-loader!./../css/style.scss")}</style>
             <div class="bar">
               <div class="loaded"></div>
               <div class="passed"></div>
