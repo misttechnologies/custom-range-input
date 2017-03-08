@@ -53,7 +53,7 @@ export default function defineCustomRangeInput() {
              * @event changing
              * dispatched when the value is about to changing
              */
-            this.dispatchEvent(new CustomEvent("changeing", { detail: this.value }));
+            this.dispatchEvent(new CustomEvent("changing", { detail: this.value }));
           };
 
           const _onmu = () => {
