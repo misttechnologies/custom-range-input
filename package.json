@@ -3,15 +3,16 @@
   "version": "0.1.0",
   "license": "BSD-3-Clause",
   "main": "dist/customrangeinput.js",
-  "description": "",
-  "keywords": "",
+  "description": "Provides CustomRangeInput custom element in ES2015 modules and in a ES5 script",
+  "keywords": "HTML5, ES6 ES2015, WebComponents, CustomElements, Range, Input, Element",
   "repository": "misttechnologies/custom-range-input",
   "author": "Shintaro Tanaka <qpshinqp@mist-t.co.jp> (https://github.com/qpSHiNqp)",
   "scripts": {
-    "postinstall": "npm run build",
+    "postinstall": "npm run submodule && npm run build",
+    "submodule": "git submodule update -i",
     "clean": "rm -r ./dist || exit 0",
-    "build": "npm run clean && webpack",
-    "watch": "npm run clean && webpack --watch",
+    "build": "webpack",
+    "watch": "webpack --watch",
     "serve": "serve ./"
   },
   "devDependencies": {

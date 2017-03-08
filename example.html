@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>CustomRangeInput example</title>
     <script src="./vendor/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="./vendor/custom-elements/src/native-shim.js"></script>
     <script src="./dist/customrangeinput.js"></script>
 <style>
 body {
@@ -18,7 +19,8 @@ body {
     <h2>CustomRangeInput example</h2>
     <div id="container">
       <custom-range-input type="range" is="custom-range-input"
-                          min="60" max="200" step="0.1" value="120" subvalue="160">
+                          min="-50" max="150" step="0.1"
+                          value="0" subvalue="100">
       </custom-range-input>
     </div>
   </body>

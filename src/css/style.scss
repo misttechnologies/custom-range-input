@@ -4,7 +4,7 @@ $barThickness:        0.6em;
 $barBorder:           none;
 $barColorBase:        rgba(white, 0.2);
 $barColorLoaded:      rgba(white, 0.2);
-$barColorPassed:      rgba(white, 0.4);
+$barColorPassed:      rgba(white, 0.7);
 $barMargin:           1em;
 
 $handleWidth:         2em;
@@ -21,6 +21,8 @@ $handleColorHovered:  rgba(white, 1.0);
   max-width:    100%;
   height:       $handleHeight;
   overflow:     hidden;
+
+  -webkit-tap-highlight-color: transparent;
 }
 
 .bar {
@@ -33,6 +35,9 @@ $handleColorHovered:  rgba(white, 1.0);
   background-color: $barColorBase;
   cursor:           pointer;
   position:         relative;
+
+  -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+  -webkit-user-select:   none;
 
   .loaded {
     @extend .bar;
@@ -66,7 +71,8 @@ $handleColorHovered:  rgba(white, 1.0);
     // left percentage value means input's value
     left:             0; // This can be changed by script
 
-    &:hover {
+    &:hover,
+    &:active {
       background-color: $handleColorHovered;
     }
   }

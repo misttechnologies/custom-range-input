@@ -12,11 +12,11 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /(lib|node_modules|bower_components|dist)/,
+        exclude: /(node_modules|vendor|dist)/,
         loader: 'babel-loader',
         query: {
           cacheDirectory: true,
-          presets: ['es2015']
+          presets: ["es2015"]
         }
       },
       {
