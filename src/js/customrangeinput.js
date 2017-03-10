@@ -46,7 +46,7 @@ export default function defineCustomRangeInput() {
           const template = document.createElement("template");
           template.innerHTML =
             `
-            <style>${require("./../css/style.scss")}</style>
+            <style>${require("!css-loader!sass-loader!./../css/style.scss")}</style>
             <div class="bar">
               <div class="loaded"></div>
               <div class="passed"></div>
