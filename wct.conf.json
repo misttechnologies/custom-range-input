@@ -1,0 +1,52 @@
+{
+  "testTimeout": "240000",
+  "plugins": {
+    "local": {
+      "disabled": true,
+      "browsers": ["all"]
+    },
+    "sauce": {
+      "disabled": false,
+      "browsers": [
+        {"browserName":"safari", "platform":"iOS 9.0", "device":"iPhone 6 Simulator"},
+        {"browserName":"safari", "platform":"iOS 9.1", "device":"iPhone SE Simulator"},
+        {"browserName":"safari", "platform":"iOS 9.2", "device":"iPad Air Simulator"},
+        {"browserName":"safari", "platform":"iOS 9.3", "device":"iPhone 6s Simulator"},
+        {"browserName":"safari", "platform":"iOS 10.0","device":"iPhone 5 Simulator"},
+        {"browserName":"safari", "platform":"iOS 10.2","device":"iPhone 7 Simulator"},
+        {"platform":"Android 4.4", "device":"Android Emulator"},
+        {"platform":"Android 5.0", "device":"Android Emulator"},
+        {"platform":"Android 5.1", "device":"Android Emulator"},
+
+        {"browserName":"safari", "version": "9", "platform":"OS X 10.11"},
+        {"browserName":"safari", "version":"10", "platform":"OS X 10.11"},
+        {"browserName":"safari", "version":"10", "platform":"macOS 10.12"},
+
+        {"browserName":"chrome", "version":  "38", "platform":"Windows 7"},
+        {"browserName":"chrome", "version":  "50", "platform":"Windows 8"},
+        {"browserName":"chrome", "version":  "53", "platform":"Windows 8"},
+        {"browserName":"chrome", "version":  "54", "platform":"Windows 8"},
+        {"browserName":"chrome", "version":  "55", "platform":"Windows 7"},
+        {"browserName":"chrome", "version":  "56", "platform":"Windows 10"},
+        {"browserName":"chrome", "version":  "56", "platform":"macOS 10.12"},
+        {"browserName":"chrome", "version":"beta", "platform":"Window 10"},
+
+        {"browserName":"firefox", "version":  "31", "platform":"Windows 7"},
+        {"browserName":"firefox", "version":  "40", "platform":"Windows 10"},
+        {"browserName":"firefox", "version":  "45", "platform":"Windows 10"},
+        {"browserName":"firefox", "version":  "49", "platform":"Windows 10"},
+        {"browserName":"firefox", "version":  "50", "platform":"Windows 10"},
+        {"browserName":"firefox", "version":  "51", "platform":"Windows 10"},
+        {"browserName":"firefox", "version":  "51", "platform":"macOS 10.12"},
+        {"browserName":"firefox", "version":"beta", "platform":"Windows 10"},
+
+        {"browserName":"internet explorer", "version":"11", "platform":"Windows 7"},
+        {"browserName":"internet explorer", "version":"11", "platform":"Windows 8"},
+        {"browserName":"internet explorer", "version":"11", "platform":"Windows 10"},
+
+        {"browserName":"microsoftedge", "version":"13", "platform":"Windows 10"},
+        {"browserName":"microsoftedge", "version":"14", "platform":"Windows 10"}
+      ]
+    }
+  }
+}

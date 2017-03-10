@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./../vendor/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="./../vendor/custom-elements/src/native-shim.js"></script>
+  <script src="./../node_modules/web-component-tester/browser.js"></script>
+  <script src="./../dist/customrangeinput.js"></script>
+</head>
+<body>
+  <custom-range-input id="fixture" type="range" is="custom-range-input"
+                      min="-5" max="15" step="0.1"
+                      value="0" subvalue="10">
+  </custom-range-input>
+  <script>
+    suite('<custom-range-input>', function() {
+      var myEl;
+      var myClass;
+
+      setup(function() {
+        myEl = document.getElementById("fixture");
+        myClass = customElements.get("custom-range-input");
+      });
+
+      test('is custom-range-input', function() {
+        assert.isTrue(myEl instanceof myClass);
+      });
+    });
+  </script>
+</body>
+</html>

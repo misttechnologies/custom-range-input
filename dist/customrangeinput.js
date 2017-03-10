@@ -87,6 +87,35 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * @license
+ * Copyright (c) 2017 Mist Technologies, Inc. All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * * Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 function defineCustomRangeInput() {
   /**
    * Actually CustomRangeInput extends HTMLInputElement (<input> element) but
@@ -99,11 +128,22 @@ function defineCustomRangeInput() {
     function CustomRangeInput() {
       _classCallCheck(this, CustomRangeInput);
 
-      // ShadowDOM construction
+      // Though native shadow DOM spec allows elements to be inserted
+      // directly into shadowRoot using innerHTML (without <template>),
+      // creating shadow DOM via <template> is required by ShadyCSS to
+      // prepare / convert styles so that they can 'shim'.
       var _this = _possibleConstructorReturn(this, (CustomRangeInput.__proto__ || Object.getPrototypeOf(CustomRangeInput)).call(this));
 
+      var template = document.createElement("template");
+      template.innerHTML = "\n            <style>" + __webpack_require__(1) + "</style>\n            <div class=\"bar\">\n              <div class=\"loaded\"></div>\n              <div class=\"passed\"></div>\n              <div class=\"handle\"></div>\n            </div>\n            ";
+      if (window.ShadyCSS) {
+        // Here styles (e.g. `:host`) go converted
+        ShadyCSS.prepareTemplate(template, "custom-range-input");
+      }
+
+      // ShadowDOM construction
       _this.attachShadow({ mode: "open" });
-      _this.shadowRoot.innerHTML = "\n            <style>" + __webpack_require__(1) + "</style>\n            <div class=\"bar\">\n              <div class=\"loaded\"></div>\n              <div class=\"passed\"></div>\n              <div class=\"handle\"></div>\n            </div>\n            ";
+      _this.shadowRoot.appendChild(document.importNode(template.content, true));
       _this._bar = _this.shadowRoot.querySelector(".bar");
       _this._loaded = _this.shadowRoot.querySelector(".loaded");
       _this._passed = _this.shadowRoot.querySelector(".passed");
@@ -133,7 +173,7 @@ function defineCustomRangeInput() {
           var rect = _this2._bar.getBoundingClientRect();
           window.console.assert(rect.right - rect.left > 0);
 
-          _this2.value = _this2._value((x - rect.left) / (rect.right - rect.left) * (_this2.max - _this2.min) + _this2.min);
+          _this2.value = (x - rect.left) / (rect.right - rect.left) * (_this2.max - _this2.min) + _this2.min;
 
           /**
            * @event changing
@@ -156,11 +196,10 @@ function defineCustomRangeInput() {
         };
       }
 
-      /****************************************************************************
-       *
-       * Here are attributes and properties managements below
-       *
-       ****************************************************************************/
+      /*********************************************************************
+       * Here are attributes and properties managements below.
+       * Synchronizing attrs with props.
+       *********************************************************************/
 
     }, {
       key: "attributeChangedCallback",
@@ -169,10 +208,19 @@ function defineCustomRangeInput() {
           this[prop] = newValue;
         }
       }
+
+      /**
+       * @private
+       * @method _value
+       * @params v {number|string}
+       * Regulates the given value `v` to make it stay between `min` and `max`.
+       */
+
     }, {
       key: "_value",
       value: function _value(v) {
-        return Math.min(Math.max(v, this.min), this.max);
+        var k = Math.pow(10, String(this.step).split(".")[1].length);
+        return Math.min(Math.max(Math.round(Number(v) * k) * 1.0 / k, this.min), this.max);
       }
     }, {
       key: "value",
@@ -304,7 +352,34 @@ module.exports = function() {
 "use strict";
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
+                                                                                                                                                                                                                                                                               * @license
+                                                                                                                                                                                                                                                                               * Copyright (c) 2017 Mist Technologies, Inc. All rights reserved.
+                                                                                                                                                                                                                                                                               * Redistribution and use in source and binary forms, with or without
+                                                                                                                                                                                                                                                                               * modification, are permitted provided that the following conditions are met:
+                                                                                                                                                                                                                                                                               *
+                                                                                                                                                                                                                                                                               * * Redistributions of source code must retain the above copyright notice, this
+                                                                                                                                                                                                                                                                               *   list of conditions and the following disclaimer.
+                                                                                                                                                                                                                                                                               *
+                                                                                                                                                                                                                                                                               * * Redistributions in binary form must reproduce the above copyright notice,
+                                                                                                                                                                                                                                                                               *   this list of conditions and the following disclaimer in the documentation
+                                                                                                                                                                                                                                                                               *   and/or other materials provided with the distribution.
+                                                                                                                                                                                                                                                                               *
+                                                                                                                                                                                                                                                                               * * Neither the name of the copyright holder nor the names of its
+                                                                                                                                                                                                                                                                               *   contributors may be used to endorse or promote products derived from
+                                                                                                                                                                                                                                                                               *   this software without specific prior written permission.
+                                                                                                                                                                                                                                                                               *
+                                                                                                                                                                                                                                                                               * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+                                                                                                                                                                                                                                                                               * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+                                                                                                                                                                                                                                                                               * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+                                                                                                                                                                                                                                                                               * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+                                                                                                                                                                                                                                                                               * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+                                                                                                                                                                                                                                                                               * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+                                                                                                                                                                                                                                                                               * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+                                                                                                                                                                                                                                                                               * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+                                                                                                                                                                                                                                                                               * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+                                                                                                                                                                                                                                                                               * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+                                                                                                                                                                                                                                                                               */
 
 var _customrangeinput = __webpack_require__(0);
 
