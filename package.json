@@ -36,7 +36,8 @@
     "sass-loader": "^6.0.3",
     "serve": "^5.0.2",
     "web-component-tester": "^5.0.0",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "selenium-standalone": "3.0.1"
   },
   "bugs": {
     "url": "https://github.com/misttechnologies/custom-range-input/issues"

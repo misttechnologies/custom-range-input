@@ -1,4 +1,6 @@
 # CustomRangeInput
+[![npm version](https://badge.fury.io/js/custom-range-input.svg)](https://badge.fury.io/js/custom-range-input)
+[![Build Status](https://travis-ci.org/misttechnologies/custom-range-input.svg?branch=master)](https://travis-ci.org/misttechnologies/custom-range-input)
 
 Defines `custom-range-input` element as a custom element using
 CustomElement API in WebComponents v1 and its polyfills.

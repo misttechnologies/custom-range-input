@@ -1,6 +1,6 @@
 [submodule "vendor/webcomponentsjs"]
 	path = vendor/webcomponentsjs
-	url = git@github.com:misttechnologies/webcomponentsjs
+	url = https://github.com/misttechnologies/webcomponentsjs
 [submodule "vendor/custom-elements"]
 	path = vendor/custom-elements
-	url = git@github.com:webcomponents/custom-elements.git
+	url = https://github.com/webcomponents/custom-elements.git
