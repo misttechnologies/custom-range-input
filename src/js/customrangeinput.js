@@ -27,6 +27,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* global require, ShadyCSS, VERSION */
+
 export default function defineCustomRangeInput() {
   /**
    * Actually CustomRangeInput extends HTMLInputElement (<input> element) but
@@ -155,6 +157,7 @@ export default function defineCustomRangeInput() {
             this.min), this.max);
     }
   }
+  CustomRangeInput.version = VERSION || "development";
   customElements.define("custom-range-input", CustomRangeInput);
   window.CustomRangeInput = CustomRangeInput;
 }

@@ -116,6 +116,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* global require, ShadyCSS, VERSION */
+
 function defineCustomRangeInput() {
   /**
    * Actually CustomRangeInput extends HTMLInputElement (<input> element) but
@@ -280,6 +282,7 @@ function defineCustomRangeInput() {
     return CustomRangeInput;
   }(HTMLElement);
 
+  CustomRangeInput.version = "0.1.0" || "development";
   customElements.define("custom-range-input", CustomRangeInput);
   window.CustomRangeInput = CustomRangeInput;
 }
