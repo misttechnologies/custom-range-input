@@ -122,7 +122,7 @@ function defineCustomRangeInput() {
    * it seems not to work on current browser implementations.
    * Thus we define CustomRangeInput from scratch, extending "plain" HTMLElement
    */
-  customElements.define("custom-range-input", function (_HTMLElement) {
+  var CustomRangeInput = function (_HTMLElement) {
     _inherits(CustomRangeInput, _HTMLElement);
 
     function CustomRangeInput() {
@@ -135,7 +135,7 @@ function defineCustomRangeInput() {
       var _this = _possibleConstructorReturn(this, (CustomRangeInput.__proto__ || Object.getPrototypeOf(CustomRangeInput)).call(this));
 
       var template = document.createElement("template");
-      template.innerHTML = "\n            <style>" + __webpack_require__(1) + "</style>\n            <div class=\"bar\">\n              <div class=\"loaded\"></div>\n              <div class=\"passed\"></div>\n              <div class=\"handle\"></div>\n            </div>\n            ";
+      template.innerHTML = "\n        <style>" + __webpack_require__(1) + "</style>\n        <div class=\"bar\">\n        <div class=\"loaded\"></div>\n        <div class=\"passed\"></div>\n        <div class=\"handle\"></div>\n        </div>\n        ";
       if (window.ShadyCSS) {
         // Here styles (e.g. `:host`) go converted
         ShadyCSS.prepareTemplate(template, "custom-range-input");
@@ -179,7 +179,7 @@ function defineCustomRangeInput() {
            * @event changing
            * dispatched when the value is about to changing
            */
-          _this2.dispatchEvent(new CustomEvent("changeing", { detail: _this2.value }));
+          _this2.dispatchEvent(new Event("changing"));
         };
 
         var _onmu = function _onmu() {
@@ -192,7 +192,7 @@ function defineCustomRangeInput() {
            * @event changed
            * dispatched when a series of value update is ended
            */
-          _this2.dispatchEvent(new CustomEvent("changed", { detail: _this2.value }));
+          _this2.dispatchEvent(new Event("changed"));
         };
       }
 
@@ -204,8 +204,9 @@ function defineCustomRangeInput() {
     }, {
       key: "attributeChangedCallback",
       value: function attributeChangedCallback(prop, oldValue, newValue) {
-        if (oldValue !== newValue) {
-          this[prop] = newValue;
+        if (Number(oldValue) != Number(newValue)) {
+          this[prop] = Number(newValue);
+          this.dispatchEvent(new Event("change"));
         }
       }
 
@@ -220,7 +221,7 @@ function defineCustomRangeInput() {
       key: "_value",
       value: function _value(v) {
         var k = Math.pow(10, String(this.step).split(".")[1].length);
-        return Math.min(Math.max(Math.round(Number(v) * k) * 1.0 / k, this.min), this.max);
+        return Math.min(Math.max(Math.round(v * k) * 1.0 / k, this.min), this.max);
       }
     }, {
       key: "value",
@@ -264,6 +265,11 @@ function defineCustomRangeInput() {
       set: function set(v) {
         this.setAttribute("step", v);
       }
+    }, {
+      key: "type",
+      get: function get() {
+        return "range";
+      }
     }], [{
       key: "observedAttributes",
       get: function get() {
@@ -272,7 +278,10 @@ function defineCustomRangeInput() {
     }]);
 
     return CustomRangeInput;
-  }(HTMLElement));
+  }(HTMLElement);
+
+  customElements.define("custom-range-input", CustomRangeInput);
+  window.CustomRangeInput = CustomRangeInput;
 }
 
 /***/ }),

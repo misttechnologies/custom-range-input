@@ -8,10 +8,6 @@ v0.1.0-rc.2 (2017-03-10)
   and IE 11) as well. Shadow DOM elements / styles are adapted to those
   browsers by `ShadyCSS.prepareTemplate()`.
 
-* Upgrading - Client Classes - Versioned client classes removed, e.g.
-  `Aws::S3::Client::V20060301.new` is now `Aws::S3::Client.new` The
-  `:api_version` constructor option is no longer accepted.
-
 * Upgrading - Docs / LICENSE - Inserted docs and license statements to top-level
   codes.
 

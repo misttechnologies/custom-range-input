@@ -8,24 +8,123 @@
   <script src="./../dist/customrangeinput.js"></script>
 </head>
 <body>
-  <custom-range-input id="fixture" type="range" is="custom-range-input"
-                      min="-5" max="15" step="0.1"
-                      value="0" subvalue="10">
-  </custom-range-input>
+  <custom-range-input id="input1"></custom-range-input>
+  <custom-range-input id="input2"></custom-range-input>
+  <custom-range-input id="input3" min="-5.0" max="15" step="0.05"
+                                  value="3" subvalue="10"> </custom-range-input>
   <script>
-    suite('<custom-range-input>', function() {
-      var myEl;
-      var myClass;
+suite('<custom-range-input>', function() {
+  var Klass, el1, el2, el3, instance;
 
-      setup(function() {
-        myEl = document.getElementById("fixture");
-        myClass = customElements.get("custom-range-input");
-      });
+  setup(function() {
+    Klass         = customElements.get("custom-range-input");
 
-      test('is custom-range-input', function() {
-        assert.isTrue(myEl instanceof myClass);
-      });
+    instance      = new CustomRangeInput();
+
+    // we don't change any properties of el1 through these tests below.
+    el1           = document.getElementById("input1");
+
+    // we may change properties of el2 through these tests below.
+    el2           = document.getElementById("input2");
+
+    el3           = document.getElementById("input3");
+  });
+
+  test('is custom-range-input', function() {
+    expect(Klass).to.equal(CustomRangeInput);
+    expect(el1).to.be.instanceOf(Klass);
+    expect(el2).to.be.instanceOf(CustomRangeInput);
+    expect(instance).to.be.instanceOf(Klass);
+  });
+
+  test('elements act as shadow', function() {
+    assert.isNull(document.querySelector("custom-range-input .bar"),
+        "shadow elements cannot be queried from the top of the document");
+    assert.equal(el1.children.length, 0,
+        "shadow elements is not enumerated as custom element's children");
+  });
+
+  test('shadow elements exist', function() {
+    var root = el1.shadowRoot;
+    assert.isOk(root, "shadowRoot exists");
+    assert.isOk(root.querySelector(".bar"));
+    assert.isOk(root.querySelector(".loaded"));
+    assert.isOk(root.querySelector(".passed"));
+    assert.isOk(root.querySelector(".handle"));
+  });
+
+  test('defaults', function() {
+    expect(el1).to.have.property('value', 0);
+    expect(el1).to.have.property('subvalue', 0);
+    expect(el1).to.have.property('min', 0);
+    expect(el1).to.have.property('max', 100);
+    expect(el1).to.have.property('step', 0.1);
+  });
+
+  test('attributes', function() {
+    expect(el3).to.have.property('value', 3);
+    expect(el3).to.have.property('subvalue', 10);
+    expect(el3).to.have.property('min', -5);
+    expect(el3).to.have.property('max', 15);
+    expect(el3).to.have.property('step', 0.05);
+  });
+
+  test('change events', function(done) {
+    // Caution: test function with a `done` argument will be executed
+    // asynchronously, and this may cause unexpected property update by the other
+    // tests or `setup` function. Be careful of property update timings.
+    el2.value = 0;
+
+    el2.addEventListener('change', function(e) {
+      expect(e.target).to.have.property('value', 100);
+      done();
     });
+    el2.setAttribute('value', 100);
+    expect(el2).to.have.property('value', 100);
+  });
+
+  test('child elements of shadow are well aligned', function() {
+    var root = el2.shadowRoot;
+    el2.value = el2.subvalue = el2.max;
+
+    var b = root.querySelector(".bar").getBoundingClientRect();
+    var l = root.querySelector(".loaded").getBoundingClientRect();
+    var p = root.querySelector(".passed").getBoundingClientRect();
+    var h = root.querySelector(".handle").getBoundingClientRect();
+
+    assert.equal(l.left, b.left,
+        "div.loaded is left-aligned to div.bar");
+    assert.equal(p.left, b.left,
+        "div.passed is left-aligned to div.bar");
+
+    assert.equal(l.top, b.top,
+        "div.loaded is top-aligned to div.bar");
+    assert.equal(p.top, b.top,
+        "div.passed is top-aligned to div.bar");
+
+    assert.equal(l.bottom, b.bottom,
+        "div.loaded is bottom-aligned to div.bar");
+    assert.equal(p.bottom, b.bottom,
+        "div.passed is bottom-aligned to div.bar");
+
+    assert.equal(l.right, b.right,
+        "div.loaded is right-aligned to div.bar");
+    assert.equal(p.right, b.right,
+        "div.passed is right-aligned to div.bar");
+  });
+
+  test('value property', function() {
+    var fn = function() { instance.value = 100; };
+    assert.changes(fn, instance, "value");
+    expect(instance).to.have.property("value", 100);
+  });
+
+  test('subvalue property', function() {
+    var fn = function() { instance.subvalue = 100; };
+    assert.changes(fn, instance, "subvalue");
+    expect(instance).to.have.property("subvalue", 100);
+  });
+});
   </script>
 </body>
 </html>

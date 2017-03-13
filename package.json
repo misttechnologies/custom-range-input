@@ -1,6 +1,6 @@
 {
   "name": "custom-range-input",
-  "version": "0.1.0",
+  "version": "0.1.0-rc.2",
   "license": "BSD-3-Clause",
   "main": "dist/customrangeinput.js",
   "description": "Provides CustomRangeInput custom element in ES2015 modules and in a ES5 script",
@@ -22,7 +22,7 @@
     "postinstall": "npm run submodule && npm run build",
     "submodule": "git submodule update -i",
     "clean": "rm -r ./dist || exit 0",
-    "test": "wct",
+    "test": "wct --plugin local",
     "build": "webpack",
     "watch": "webpack --watch",
     "serve": "serve ./"

@@ -6,7 +6,7 @@
       "browsers": ["all"]
     },
     "sauce": {
-      "disabled": false,
+      "disabled": true,
       "browsers": [
         {"browserName":"safari", "platform":"iOS 9.0", "device":"iPhone 6 Simulator"},
         {"browserName":"safari", "platform":"iOS 9.1", "device":"iPhone SE Simulator"},
@@ -29,7 +29,7 @@
         {"browserName":"chrome", "version":  "55", "platform":"Windows 7"},
         {"browserName":"chrome", "version":  "56", "platform":"Windows 10"},
         {"browserName":"chrome", "version":  "56", "platform":"macOS 10.12"},
-        {"browserName":"chrome", "version":"beta", "platform":"Window 10"},
+        {"browserName":"chrome", "version":"beta", "platform":"Windows 10"},
 
         {"browserName":"firefox", "version":  "31", "platform":"Windows 7"},
         {"browserName":"firefox", "version":  "40", "platform":"Windows 10"},
@@ -41,7 +41,7 @@
         {"browserName":"firefox", "version":"beta", "platform":"Windows 10"},
 
         {"browserName":"internet explorer", "version":"11", "platform":"Windows 7"},
-        {"browserName":"internet explorer", "version":"11", "platform":"Windows 8"},
+        {"browserName":"internet explorer", "version":"11", "platform":"Windows 8.1"},
         {"browserName":"internet explorer", "version":"11", "platform":"Windows 10"},
 
         {"browserName":"microsoftedge", "version":"13", "platform":"Windows 10"},
