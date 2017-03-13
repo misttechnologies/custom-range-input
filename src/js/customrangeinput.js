@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* global require, ShadyCSS, VERSION */
+/* global require, ShadyCSS */
 
 export default function defineCustomRangeInput() {
   if (!customElements || customElements.get("custom-range-input")) {
@@ -162,7 +162,7 @@ export default function defineCustomRangeInput() {
             this.min), this.max);
     }
   }
-  CustomRangeInput.version = VERSION || "development";
+  CustomRangeInput.version = require("./../../package.json").version || "development";
   customElements.define("custom-range-input", CustomRangeInput);
   window.CustomRangeInput = CustomRangeInput;
 }
