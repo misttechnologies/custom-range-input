@@ -51,7 +51,7 @@ $handleColorHovered:  rgba(white, 1.0);
   .passed {
     @extend .loaded;
     background-color: $barColorPassed;
-    width:            60%; // This can be changed by script
+    width:            0; // This can be changed by script
   }
 
   .handle {

@@ -119,11 +119,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /* global require, ShadyCSS, VERSION */
 
 function defineCustomRangeInput() {
+  if (!customElements || customElements.get("custom-range-input")) {
+    // Immediately return if customElements object is absent, or
+    // "custom-range-input" already defined.
+    return;
+  }
   /**
    * Actually CustomRangeInput extends HTMLInputElement (<input> element) but
    * it seems not to work on current browser implementations.
    * Thus we define CustomRangeInput from scratch, extending "plain" HTMLElement
    */
+
   var CustomRangeInput = function (_HTMLElement) {
     _inherits(CustomRangeInput, _HTMLElement);
 
@@ -206,7 +212,7 @@ function defineCustomRangeInput() {
     }, {
       key: "attributeChangedCallback",
       value: function attributeChangedCallback(prop, oldValue, newValue) {
-        if (Number(oldValue) != Number(newValue)) {
+        if (oldValue != newValue) {
           this[prop] = Number(newValue);
           this.dispatchEvent(new Event("change"));
         }
@@ -296,7 +302,7 @@ exports = module.exports = __webpack_require__(2)();
 
 
 // module
-exports.push([module.i, ":host {\n  display: flex;\n  align-items: center;\n  font-size: 20px;\n  max-width: 100%;\n  height: 2em;\n  overflow: hidden;\n  -webkit-tap-highlight-color: transparent; }\n\n.bar, .bar .loaded, .bar .passed {\n  font-size: 0.5em;\n  width: calc(100% - 0.8em);\n  height: 0.6em;\n  margin: 0 calc(1em + 1em);\n  border-radius: 0.6em;\n  border: none;\n  background-color: rgba(255, 255, 255, 0.2);\n  cursor: pointer;\n  position: relative;\n  -webkit-touch-callout: none;\n  /* Disable Android and iOS callouts*/\n  -webkit-user-select: none; }\n  .bar .loaded, .bar .passed {\n    position: absolute;\n    background-color: rgba(255, 255, 255, 0.2);\n    margin: 0;\n    width: 0;\n    height: 100%; }\n  .bar .passed {\n    background-color: rgba(255, 255, 255, 0.7);\n    width: 60%; }\n  .bar .handle {\n    display: block;\n    background-color: rgba(255, 255, 255, 0.85);\n    width: 2em;\n    height: 2em;\n    border: 1px solid gray;\n    border-radius: 2em;\n    cursor: inherit;\n    position: relative;\n    transform: translate(-50%, -50%);\n    top: 50%;\n    left: 0; }\n    .bar .handle:hover, .bar .handle:active {\n      background-color: white; }\n", ""]);
+exports.push([module.i, ":host {\n  display: flex;\n  align-items: center;\n  font-size: 20px;\n  max-width: 100%;\n  height: 2em;\n  overflow: hidden;\n  -webkit-tap-highlight-color: transparent; }\n\n.bar, .bar .loaded, .bar .passed {\n  font-size: 0.5em;\n  width: calc(100% - 0.8em);\n  height: 0.6em;\n  margin: 0 calc(1em + 1em);\n  border-radius: 0.6em;\n  border: none;\n  background-color: rgba(255, 255, 255, 0.2);\n  cursor: pointer;\n  position: relative;\n  -webkit-touch-callout: none;\n  /* Disable Android and iOS callouts*/\n  -webkit-user-select: none; }\n  .bar .loaded, .bar .passed {\n    position: absolute;\n    background-color: rgba(255, 255, 255, 0.2);\n    margin: 0;\n    width: 0;\n    height: 100%; }\n  .bar .passed {\n    background-color: rgba(255, 255, 255, 0.7);\n    width: 0; }\n  .bar .handle {\n    display: block;\n    background-color: rgba(255, 255, 255, 0.85);\n    width: 2em;\n    height: 2em;\n    border: 1px solid gray;\n    border-radius: 2em;\n    cursor: inherit;\n    position: relative;\n    transform: translate(-50%, -50%);\n    top: 50%;\n    left: 0; }\n    .bar .handle:hover, .bar .handle:active {\n      background-color: white; }\n", ""]);
 
 // exports
 

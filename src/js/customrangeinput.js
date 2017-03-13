@@ -30,6 +30,11 @@
 /* global require, ShadyCSS, VERSION */
 
 export default function defineCustomRangeInput() {
+  if (!customElements || customElements.get("custom-range-input")) {
+    // Immediately return if customElements object is absent, or
+    // "custom-range-input" already defined.
+    return;
+  }
   /**
    * Actually CustomRangeInput extends HTMLInputElement (<input> element) but
    * it seems not to work on current browser implementations.
@@ -138,7 +143,7 @@ export default function defineCustomRangeInput() {
       return ["value", "subvalue", "min", "max", "step"];
     }
     attributeChangedCallback(prop, oldValue, newValue) {
-      if (Number(oldValue) != Number(newValue)) {
+      if (oldValue != newValue) {
         this[prop] = Number(newValue);
         this.dispatchEvent(new Event("change"));
       }
