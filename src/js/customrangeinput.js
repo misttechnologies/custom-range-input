@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* global require, ShadyCSS, VERSION */
+/* global require, ShadyCSS */
 
 export default function defineCustomRangeInput() {
   if (!customElements || customElements.get("custom-range-input")) {
@@ -100,7 +100,7 @@ export default function defineCustomRangeInput() {
          * @event changing
          * dispatched when the value is about to changing
          */
-        this.dispatchEvent(new Event("changing"));
+        this.dispatchEvent(new CustomEvent("changing"));
       };
 
       const _onmu = () => {
@@ -113,7 +113,7 @@ export default function defineCustomRangeInput() {
          * @event changed
          * dispatched when a series of value update is ended
          */
-        this.dispatchEvent(new Event("changed"));
+        this.dispatchEvent(new CustomEvent("changed"));
       };
     }
 
@@ -123,13 +123,13 @@ export default function defineCustomRangeInput() {
      *********************************************************************/
     get value( ) { return Number(this.getAttribute("value") || 0.0); }
     set value(v) {               this.setAttribute("value", this._value(v));
-      this._passed.style.width = this._handle.style.left =
-        100.0 * (this.value - this.min) / (this.max - this.min) + "%";
+      this._passed.style.width =
+        this._handle.style.left =
+        this._percentage(this.value) + "%";
     }
     get subvalue( ) { return Number(this.getAttribute("subvalue") || 0.0); }
     set subvalue(v) {               this.setAttribute("subvalue", this._value(v));
-      this._loaded.style.width =
-        100.0 * (this.subvalue - this.min) / (this.max - this.min) + "%";
+      this._loaded.style.width = this._percentage(this.subvalue) + "%";
     }
     get min( )  { return Number(this.getAttribute("min") || 0.0); }
     set min(v)  {               this.setAttribute("min", v); }
@@ -145,7 +145,7 @@ export default function defineCustomRangeInput() {
     attributeChangedCallback(prop, oldValue, newValue) {
       if (oldValue != newValue) {
         this[prop] = Number(newValue);
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change"));
       }
     }
 
@@ -161,8 +161,11 @@ export default function defineCustomRangeInput() {
             (Math.round(v * k) * 1.0) / k,
             this.min), this.max);
     }
+    _percentage(v) {
+      return 100.0 * (v - this.min) / (this.max - this.min);
+    }
   }
-  CustomRangeInput.version = VERSION || "development";
+  CustomRangeInput.version = require("./../../package.json").version;
   customElements.define("custom-range-input", CustomRangeInput);
   window.CustomRangeInput = CustomRangeInput;
 }
