@@ -1,3 +1,16 @@
+Unreleased Changes
+------------------
+
+* Issue - `e.preventDefault()` on dragging handle - Call `e.preventDefault()`
+  when user is dragging handle to prevent the entire screen from scrolling around
+
+v0.1.1 (2017-03-14)
+------------------
+
+* Upgrading - UglifyJS - Now output js will be compressed
+
+* Upgrading - README badges
+
 v0.1.0 (2017-03-13)
 ------------------
 

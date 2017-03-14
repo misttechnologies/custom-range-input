@@ -101,6 +101,7 @@ export default function defineCustomRangeInput() {
          * dispatched when the value is about to changing
          */
         this.dispatchEvent(new CustomEvent("changing"));
+        e.preventDefault();
       };
 
       const _onmu = () => {
