@@ -87,8 +87,8 @@ export default function defineCustomRangeInput() {
       this.addEventListener("touchstart", _onmd);
 
       const _onmm = (e) => {
-        let x = ("changedTouches" in e) ?
-          e.changedTouches[0].pageX : e.pageX;
+        let x = ("touches" in e) ?
+          e.touches[0].pageX : e.pageX;
         const rect = this._bar.getBoundingClientRect();
         window.console.assert(rect.right-rect.left > 0);
 

@@ -121,7 +121,7 @@ npm test
 ```
 
 Make sure your node version is ^6.0.0 to run tests.
-Also selenium-standalone is required to be installed blobally to run tests.
+Also selenium-standalone is required to be installed globally to run tests.
 
 ```sh
 npm install -g selenium-standalone@6.0.1
