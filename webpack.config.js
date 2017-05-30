@@ -1,10 +1,11 @@
-/* global require, module */
+/* global require, module, __dirname */
 const webpack = require("webpack");
+const path    = require("path");
 
 module.exports = {
   entry: "./index.js",
   output: {
-    path: "./dist",
+    path: path.resolve(__dirname, "dist"),
     filename: "customrangeinput.js",
   },
   module: {
