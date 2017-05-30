@@ -29,12 +29,14 @@
 
 /* global require, ShadyCSS */
 
-export default function defineCustomRangeInput() {
+export default function defineCustomRangeInput(customElements, HTMLElement) {
+  customElements = customElements || window.customElements;
   if (!customElements || customElements.get("custom-range-input")) {
     // Immediately return if customElements object is absent, or
     // "custom-range-input" already defined.
     return;
   }
+  HTMLElement = HTMLElement || window.HTMLElement;
   /**
    * Actually CustomRangeInput extends HTMLInputElement (<input> element) but
    * it seems not to work on current browser implementations.
@@ -73,6 +75,33 @@ export default function defineCustomRangeInput() {
       this._handle = this.shadowRoot.querySelector(".handle");
 
       this._setupListeners();
+    }
+
+    /**
+     * @method connectedCallback
+     * called when the element is appended to a document.
+     * One of the Lifecycle Callbacks of customElements
+     */
+    connectedCallback() {
+      // NOTE: we need to reassign and release unmanaged props which were set
+      // before the element was upgraded.
+      this.setAttribute("min", this.min || 0);
+      delete this.min;
+      this.setAttribute("max", this.max || 100);
+      delete this.max;
+      this.setAttribute("step", this.step || 0.1);
+      delete this.step;
+      this.setAttribute("value", this.value || 0);
+      delete this.value;
+      this.setAttribute("subvalue", this.subvalue || 0);
+      delete this.subvalue;
+    }
+    /**
+     * @method disconnectedCallback
+     * called when the element is removed from a document.
+     * One of the Lifecycle Callbacks of customElements
+     */
+    disconnectedCallback() {
     }
 
     _setupListeners() {
@@ -166,6 +195,7 @@ export default function defineCustomRangeInput() {
       return 100.0 * (v - this.min) / (this.max - this.min);
     }
   }
+
   CustomRangeInput.version = require("./../../package.json").version;
   customElements.define("custom-range-input", CustomRangeInput);
   window.CustomRangeInput = CustomRangeInput;
