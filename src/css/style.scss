@@ -5,7 +5,6 @@ $barBorder:           none;
 $barColorBase:        rgba(white, 0.2);
 $barColorLoaded:      rgba(white, 0.2);
 $barColorPassed:      rgba(white, 0.7);
-$barMargin:           1em;
 
 $handleWidth:         2em;
 $handleHeight:        2em;
@@ -27,9 +26,9 @@ $handleColorHovered:  rgba(white, 1.0);
 
 .bar {
   font-size:        0.5em;
-  width:            calc(100% - 0.8em);
+  width:            calc(100% - #{$handleWidth});
   height:           $barThickness;
-  margin:           0 calc(#{$barMargin} + #{$handleWidth / 2});
+  margin:           0 #{$handleWidth / 2};
   border-radius:    $barThickness;
   border:           $barBorder;
   background-color: $barColorBase;
