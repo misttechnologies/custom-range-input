@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import defineCustomRangeInput from "./src/js/customrangeinput";
+import CustomRangeInput from "./src/js/customrangeinput";
 /**
  * Actually CustomRangeInput extends HTMLInputElement (<input> element) but
  * it seems not to work on current browser implementations.
@@ -36,9 +36,11 @@ import defineCustomRangeInput from "./src/js/customrangeinput";
 
 // Expecting a polyfill to be loaded
 if ("object" === typeof customElements) {
-  defineCustomRangeInput();
+  if (!window.customElements.get('custom-range-input'))
+    window.customElements.define('custom-range-input', CustomRangeInput);
 } else {
   window.addEventListener('WebComponentsReady', () => {
-    defineCustomRangeInput();
+    if (!window.customElements.get('custom-range-input'))
+      window.customElements.define('custom-range-input', CustomRangeInput);
   });
 }

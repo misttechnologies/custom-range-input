@@ -29,174 +29,165 @@
 
 /* global require, ShadyCSS */
 
-export default function defineCustomRangeInput(customElements, HTMLElement) {
-  customElements = customElements || window.customElements;
-  if (!customElements || customElements.get("custom-range-input")) {
-    // Immediately return if customElements object is absent, or
-    // "custom-range-input" already defined.
-    return;
+/**
+ * Actually CustomRangeInput extends HTMLInputElement (<input> element) but
+ * it seems not to work on current browser implementations.
+ * Thus we define CustomRangeInput from scratch, extending "plain" HTMLElement
+ */
+class CustomRangeInput extends HTMLElement {
+  constructor() {
+    super();
+
+    // Though native shadow DOM spec allows elements to be inserted
+    // directly into shadowRoot using innerHTML (without <template>),
+    // creating shadow DOM via <template> is required by ShadyCSS to
+    // prepare / convert styles so that they can 'shim'.
+    const template = document.createElement("template");
+    template.innerHTML =
+      `
+      <style>${require("!css-loader!sass-loader!./../css/style.scss")}</style>
+      <div class="bar">
+      <div class="loaded"></div>
+      <div class="passed"></div>
+      <div class="handle"></div>
+      </div>
+      `;
+    if (window.ShadyCSS) {
+      // Here styles (e.g. `:host`) go converted
+      ShadyCSS.prepareTemplate(template, "custom-range-input");
+    }
+
+    // ShadowDOM construction
+    this.attachShadow({mode: "open"});
+    this.shadowRoot.appendChild(
+        document.importNode(template.content, true));
+    this._bar    = this.shadowRoot.querySelector(".bar");
+    this._loaded = this.shadowRoot.querySelector(".loaded");
+    this._passed = this.shadowRoot.querySelector(".passed");
+    this._handle = this.shadowRoot.querySelector(".handle");
+
+    this._setupListeners();
   }
-  HTMLElement = HTMLElement || window.HTMLElement;
+
   /**
-   * Actually CustomRangeInput extends HTMLInputElement (<input> element) but
-   * it seems not to work on current browser implementations.
-   * Thus we define CustomRangeInput from scratch, extending "plain" HTMLElement
+   * @method connectedCallback
+   * called when the element is appended to a document.
+   * One of the Lifecycle Callbacks of customElements
    */
-  class CustomRangeInput extends HTMLElement {
-    constructor() {
-      super();
+  connectedCallback() {
+    // NOTE: we need to reassign and release unmanaged props which were set
+    // before the element was upgraded.
+    this.setAttribute("min", this.min || 0);
+    delete this.min;
+    this.setAttribute("max", this.max || 100);
+    delete this.max;
+    this.setAttribute("step", this.step || 0.1);
+    delete this.step;
+    this.setAttribute("value", this.value || 0);
+    delete this.value;
+    this.setAttribute("subvalue", this.subvalue || 0);
+    delete this.subvalue;
+  }
+  /**
+   * @method disconnectedCallback
+   * called when the element is removed from a document.
+   * One of the Lifecycle Callbacks of customElements
+   */
+  disconnectedCallback() {
+  }
 
-      // Though native shadow DOM spec allows elements to be inserted
-      // directly into shadowRoot using innerHTML (without <template>),
-      // creating shadow DOM via <template> is required by ShadyCSS to
-      // prepare / convert styles so that they can 'shim'.
-      const template = document.createElement("template");
-      template.innerHTML =
-        `
-        <style>${require("!css-loader!sass-loader!./../css/style.scss")}</style>
-        <div class="bar">
-        <div class="loaded"></div>
-        <div class="passed"></div>
-        <div class="handle"></div>
-        </div>
-        `;
-      if (window.ShadyCSS) {
-        // Here styles (e.g. `:host`) go converted
-        ShadyCSS.prepareTemplate(template, "custom-range-input");
-      }
+  _setupListeners() {
+    const _onmd = (e) => {
+      document.addEventListener("mousemove", _onmm, false);
+      document.addEventListener("mouseup",   _onmu, false);
+      document.addEventListener("touchmove", _onmm, false);
+      document.addEventListener("touchend",  _onmu, false);
+      _onmm(e);
+    };
+    this.addEventListener("mousedown",  _onmd);
+    this.addEventListener("touchstart", _onmd);
 
-      // ShadowDOM construction
-      this.attachShadow({mode: "open"});
-      this.shadowRoot.appendChild(
-          document.importNode(template.content, true));
-      this._bar    = this.shadowRoot.querySelector(".bar");
-      this._loaded = this.shadowRoot.querySelector(".loaded");
-      this._passed = this.shadowRoot.querySelector(".passed");
-      this._handle = this.shadowRoot.querySelector(".handle");
+    const _onmm = (e) => {
+      let x = ("touches" in e) ?
+        e.touches[0].pageX : e.pageX;
+      const rect = this._bar.getBoundingClientRect();
+      window.console.assert(rect.right-rect.left > 0);
 
-      this._setupListeners();
-    }
+      this.value =
+        (x-rect.left) / (rect.right-rect.left) * (this.max-this.min) +
+        this.min;
 
-    /**
-     * @method connectedCallback
-     * called when the element is appended to a document.
-     * One of the Lifecycle Callbacks of customElements
-     */
-    connectedCallback() {
-      // NOTE: we need to reassign and release unmanaged props which were set
-      // before the element was upgraded.
-      this.setAttribute("min", this.min || 0);
-      delete this.min;
-      this.setAttribute("max", this.max || 100);
-      delete this.max;
-      this.setAttribute("step", this.step || 0.1);
-      delete this.step;
-      this.setAttribute("value", this.value || 0);
-      delete this.value;
-      this.setAttribute("subvalue", this.subvalue || 0);
-      delete this.subvalue;
-    }
-    /**
-     * @method disconnectedCallback
-     * called when the element is removed from a document.
-     * One of the Lifecycle Callbacks of customElements
-     */
-    disconnectedCallback() {
-    }
+      /**
+       * @event changing
+       * dispatched when the value is about to changing
+       */
+      this.dispatchEvent(new CustomEvent("changing"));
+      e.preventDefault();
+    };
 
-    _setupListeners() {
-      const _onmd = (e) => {
-        document.addEventListener("mousemove", _onmm, false);
-        document.addEventListener("mouseup",   _onmu, false);
-        document.addEventListener("touchmove", _onmm, false);
-        document.addEventListener("touchend",  _onmu, false);
-        _onmm(e);
-      };
-      this.addEventListener("mousedown",  _onmd);
-      this.addEventListener("touchstart", _onmd);
+    const _onmu = () => {
+      document.removeEventListener("mousemove", _onmm, false);
+      document.removeEventListener("mouseup",   _onmu, false);
+      document.removeEventListener("touchmove", _onmm, false);
+      document.removeEventListener("touchend",  _onmu, false);
 
-      const _onmm = (e) => {
-        let x = ("touches" in e) ?
-          e.touches[0].pageX : e.pageX;
-        const rect = this._bar.getBoundingClientRect();
-        window.console.assert(rect.right-rect.left > 0);
+      /**
+       * @event changed
+       * dispatched when a series of value update is ended
+       */
+      this.dispatchEvent(new CustomEvent("changed"));
+    };
+  }
 
-        this.value =
-          (x-rect.left) / (rect.right-rect.left) * (this.max-this.min) +
-          this.min;
+  /*********************************************************************
+   * Here are attributes and properties managements below.
+   * Synchronizing attrs with props.
+   *********************************************************************/
+  get value( ) { return Number(this.getAttribute("value") || 0.0); }
+  set value(v) {               this.setAttribute("value", this._value(v));
+    this._passed.style.width =
+      this._handle.style.left =
+      this._percentage(this.value) + "%";
+  }
+  get subvalue( ) { return Number(this.getAttribute("subvalue") || 0.0); }
+  set subvalue(v) {               this.setAttribute("subvalue", this._value(v));
+    this._loaded.style.width = this._percentage(this.subvalue) + "%";
+  }
+  get min( )  { return Number(this.getAttribute("min") || 0.0); }
+  set min(v)  {               this.setAttribute("min", v); }
+  get max( )  { return Number(this.getAttribute("max") || 100.0); }
+  set max(v)  {               this.setAttribute("max", v); }
+  get step( ) { return Number(this.getAttribute("step") || 0.1); }
+  set step(v) {               this.setAttribute("step", v); }
+  get type( ) { return "range"; }
 
-        /**
-         * @event changing
-         * dispatched when the value is about to changing
-         */
-        this.dispatchEvent(new CustomEvent("changing"));
-        e.preventDefault();
-      };
-
-      const _onmu = () => {
-        document.removeEventListener("mousemove", _onmm, false);
-        document.removeEventListener("mouseup",   _onmu, false);
-        document.removeEventListener("touchmove", _onmm, false);
-        document.removeEventListener("touchend",  _onmu, false);
-
-        /**
-         * @event changed
-         * dispatched when a series of value update is ended
-         */
-        this.dispatchEvent(new CustomEvent("changed"));
-      };
-    }
-
-    /*********************************************************************
-     * Here are attributes and properties managements below.
-     * Synchronizing attrs with props.
-     *********************************************************************/
-    get value( ) { return Number(this.getAttribute("value") || 0.0); }
-    set value(v) {               this.setAttribute("value", this._value(v));
-      this._passed.style.width =
-        this._handle.style.left =
-        this._percentage(this.value) + "%";
-    }
-    get subvalue( ) { return Number(this.getAttribute("subvalue") || 0.0); }
-    set subvalue(v) {               this.setAttribute("subvalue", this._value(v));
-      this._loaded.style.width = this._percentage(this.subvalue) + "%";
-    }
-    get min( )  { return Number(this.getAttribute("min") || 0.0); }
-    set min(v)  {               this.setAttribute("min", v); }
-    get max( )  { return Number(this.getAttribute("max") || 100.0); }
-    set max(v)  {               this.setAttribute("max", v); }
-    get step( ) { return Number(this.getAttribute("step") || 0.1); }
-    set step(v) {               this.setAttribute("step", v); }
-    get type( ) { return "range"; }
-
-    static get observedAttributes() {
-      return ["value", "subvalue", "min", "max", "step"];
-    }
-    attributeChangedCallback(prop, oldValue, newValue) {
-      if (oldValue != newValue) {
-        this[prop] = Number(newValue);
-        this.dispatchEvent(new CustomEvent("change"));
-      }
-    }
-
-    /**
-     * @private
-     * @method _value
-     * @params v {number|string}
-     * Regulates the given value `v` to make it stay between `min` and `max`.
-     */
-    _value(v) {
-      const k = Math.pow(10, String(this.step).split(".")[1].length);
-      return Math.min(Math.max(
-            (Math.round(v * k) * 1.0) / k,
-            this.min), this.max);
-    }
-    _percentage(v) {
-      return 100.0 * (v - this.min) / (this.max - this.min);
+  static get observedAttributes() {
+    return ["value", "subvalue", "min", "max", "step"];
+  }
+  attributeChangedCallback(prop, oldValue, newValue) {
+    if (oldValue != newValue) {
+      this[prop] = Number(newValue);
+      this.dispatchEvent(new CustomEvent("change"));
     }
   }
 
-  CustomRangeInput.version = require("./../../package.json").version;
-  customElements.define("custom-range-input", CustomRangeInput);
-  window.CustomRangeInput = CustomRangeInput;
+  /**
+   * @private
+   * @method _value
+   * @params v {number|string}
+   * Regulates the given value `v` to make it stay between `min` and `max`.
+   */
+  _value(v) {
+    const k = Math.pow(10, String(this.step).split(".")[1].length);
+    return Math.min(Math.max(
+          (Math.round(v * k) * 1.0) / k,
+          this.min), this.max);
+  }
+  _percentage(v) {
+    return 100.0 * (v - this.min) / (this.max - this.min);
+  }
 }
+CustomRangeInput.version = require("./../../package.json").version;
+window.CustomRangeInput = CustomRangeInput;
+
+export default CustomRangeInput;
