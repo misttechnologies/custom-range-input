@@ -38,6 +38,7 @@
     "sass-loader": "^6.0.3",
     "selenium-standalone": "3.0.1",
     "serve": "^5.0.2",
+    "uglify-save-license": "^0.4.1",
     "web-component-tester": "^5.0.0",
     "webpack": "^2.2.1"
   },

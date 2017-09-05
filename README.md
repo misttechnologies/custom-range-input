@@ -138,9 +138,10 @@ See [CONTRIBUTING.md][] file
 ![Photo](https://avatars0.githubusercontent.com/u/1808432?v=3&s=80)
 [Shintaro Tanaka](https://github.com/qpSHiNqp/)
 
-## License
+## Copyright and License
 
-[BSD 3-Clause License][license]
+Copyright (c) 2017, Mist Technologies, Inc. All rights reserved.
+This software is released under the [BSD 3-Clause License][license], see [LICENSE][] file.
 
 [license]: https://opensource.org/licenses/BSD-3-Clause
 [CONTRIBUTING.md]: https://github.com/misttechnologies/custom-range-input/blob/master/CONTRIBUTING.md
