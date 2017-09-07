@@ -31,13 +31,13 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: require('uglify-save-license')
-      },
-      compress: {
-        warnings: false
-      }
-    })
+    //new webpack.optimize.UglifyJsPlugin({
+    //  output: {
+    //    comments: require('uglify-save-license')
+    //  },
+    //  compress: {
+    //    warnings: false
+    //  }
+    //})
   ]
 };
