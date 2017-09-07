@@ -1,6 +1,6 @@
 {
   "name": "custom-range-input",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "BSD-3-Clause",
   "main": "dist/customrangeinput.js",
   "description": "Provides CustomRangeInput custom element in ES2015 modules and in a ES5 script",
